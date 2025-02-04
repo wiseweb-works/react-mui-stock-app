@@ -95,6 +95,8 @@ const authSlice = createSlice({
       })
       .addCase(logoutUser.fulfilled, (state) => {
         state.loading = false;
+        state.user = '';
+        state.token = '';
       });
   },
 });

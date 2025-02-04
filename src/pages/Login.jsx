@@ -14,6 +14,7 @@ import { loginUser } from '../redux/reducer/authReducer';
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
   const LoginSchema = Yup.object().shape({
     username: Yup.string()
       .min(5, 'Kullanıcı adı 5 karakterden küçük olamaz')
@@ -26,6 +27,12 @@ const Login = () => {
       .matches(/\d+/, 'Şifre sayısal karakter içerir.')
       .matches(/[@$?!%&*_-]+/, 'Özel karakter içerir(@$?!%&*_-)'),
   });
+
+  useEffect(() => {
+    if (user) {
+      navigate('/stock');
+    }
+  }, [user, navigate]);
 
   return (
     <div style={{ height: '100vh' }}>

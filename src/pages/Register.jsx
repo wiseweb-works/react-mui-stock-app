@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux';
 
 const Register = () => {
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
   const SignupSchema = Yup.object().shape({
     username: Yup.string()
       .min(5, 'Kullanıcı adı 5 karakterden küçük olamaz')
@@ -34,6 +35,12 @@ const Register = () => {
       .matches(/\d+/, 'Şifre sayısal karakter içermelidir.')
       .matches(/[@$?!%&*_-]+/, 'Özel karakter içermelidir(@$?!%&*_-)'),
   });
+
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
 
   return (
     <div style={{ height: '100vh' }}>

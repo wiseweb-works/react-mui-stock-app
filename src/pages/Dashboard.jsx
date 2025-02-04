@@ -13,7 +13,6 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
-import { useState } from 'react';
 
 import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -21,12 +20,14 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import { Outlet, useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../redux/reducer/authReducer';
+import { useEffect, useState } from 'react';
 
 const drawerWidth = 240;
 
 function ResponsiveDrawer(props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
@@ -35,10 +36,11 @@ function ResponsiveDrawer(props) {
     setMobileOpen(false);
   };
 
-  const handleLogout = () => {
-    dispatch(logoutUser());
-    navigate('/');
-  };
+  useEffect(() => {
+    if (!user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
 
   const handleDrawerTransitionEnd = () => {
     setIsClosing(false);
@@ -103,7 +105,7 @@ function ResponsiveDrawer(props) {
           <Typography variant="h6" noWrap component="div">
             Stock App
           </Typography>
-          <Button color="inherit" onClick={handleLogout}>
+          <Button color="inherit" onClick={() => dispatch(logoutUser())}>
             Logout
           </Button>
         </Toolbar>
