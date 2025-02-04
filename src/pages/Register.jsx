@@ -7,12 +7,13 @@ import AuthImage from '../components/AuthImage';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import RegisterForm from '../components/RegisterForm';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createUser } from '../redux/reducer/authReducer';
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
 const Register = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
   const SignupSchema = Yup.object().shape({
     username: Yup.string()
