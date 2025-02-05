@@ -8,19 +8,26 @@ import {
   List,
   ListItem,
   ListItemButton,
-  ListItemIcon,
   ListItemText,
   Toolbar,
   Typography,
 } from '@mui/material';
 
-import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { Outlet, useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../redux/reducer/authReducer';
 import { useEffect, useState } from 'react';
+
+import {
+  brand,
+  firms,
+  analytics,
+  cart,
+  purchases,
+  sales,
+} from '../assets/navbar';
 
 const drawerWidth = 240;
 
@@ -53,23 +60,57 @@ function ResponsiveDrawer(props) {
   };
 
   const links = [
-    { title: 'Dashboard', url: '' },
-    { title: 'Firms', url: 'firms' },
-    { title: 'Products', url: 'products' },
-    { title: 'Purchases', url: 'purchases' },
-    { title: 'Sales', url: 'sales' },
+    {
+      title: 'Dashboard',
+      url: '',
+      icon: analytics,
+    },
+    { title: 'Firms', url: 'firms', icon: firms },
+    {
+      title: 'Products',
+      url: 'products',
+      icon: cart,
+    },
+    {
+      title: 'Purchases',
+      url: 'purchases',
+      icon: purchases,
+    },
+    { title: 'Sales', url: 'sales', icon: sales },
+    { title: 'Brands', url: 'brands', icon: brand },
   ];
-
   const drawer = (
     <div>
       <Toolbar />
       <List>
         {links.map((text, index) => (
           <ListItem key={index} disablePadding>
-            <ListItemButton onClick={() => navigate(`/stock/${text.url}`)}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
+            <ListItemButton
+              onClick={() => navigate(`${text.url}`)}
+              sx={{
+                color: 'secondary.main',
+                borderRadius: '1rem',
+                transition: 'all 0.7s ease-in-out ',
+                // '&.Mui-selected': {
+                //   backgroundColor: 'secondary.second',
+                //   color: 'white',
+                // },
+                '&:hover': {
+                  backgroundColor: 'secondary.second',
+                  color: 'white',
+                },
+              }}
+            >
+              <Box
+                component="img"
+                src={text.icon}
+                alt={text.title}
+                sx={{
+                  width: 24,
+                  height: 24,
+                  mr: 2,
+                }}
+              />
               <ListItemText primary={text.title} />
             </ListItemButton>
           </ListItem>
@@ -90,6 +131,9 @@ function ResponsiveDrawer(props) {
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
+          backgroundColor: 'white',
+          color: 'secondary.main',
+          borderRadius: '10px',
         }}
       >
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -105,8 +149,21 @@ function ResponsiveDrawer(props) {
           <Typography variant="h6" noWrap component="div">
             Stock App
           </Typography>
-          <Button color="inherit" onClick={() => dispatch(logoutUser())}>
+          <Button
+            color="inherit"
+            onClick={() => dispatch(logoutUser())}
+            sx={{
+              '&:hover': {
+                backgroundColor: 'secondary.second',
+                color: 'white',
+                '& .MuiSvgIcon-root': {
+                  color: 'red',
+                },
+              },
+            }}
+          >
             Logout
+            <LogoutIcon />
           </Button>
         </Toolbar>
       </AppBar>
