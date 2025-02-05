@@ -1,5 +1,8 @@
+import { useSelector } from 'react-redux';
+
 const Purchases = () => {
-  return <div>Purchases</div>;
+  const { purchases } = useSelector((state) => state.dashboard);
+  return <div>{purchases.length > 0 ? purchases : 'Purchases Page'}</div>;
 };
 
 export default Purchases;
