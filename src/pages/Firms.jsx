@@ -11,13 +11,15 @@ import {
   CardActions,
   Button,
   Container,
+  CircularProgress,
+  Box,
 } from '@mui/material';
 
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const Firms = () => {
-  const { firms } = useSelector((state) => state.dashboard);
+  const { firms, loading } = useSelector((state) => state.dashboard);
   const { token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
@@ -25,8 +27,12 @@ const Firms = () => {
     if (!firms.length > 0) dispatch(getItem({ item: 'firms', token }));
   }, [dispatch, token, firms.length]);
 
-  return (
-    <Container>
+  return loading ? (
+    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+      <CircularProgress size="4rem" />
+    </Box>
+  ) : (
+    <Container maxWidth="lg">
       <Typography sx={{ textAlign: 'center' }} variant="h4">
         Firms
       </Typography>

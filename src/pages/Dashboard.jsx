@@ -66,18 +66,19 @@ function ResponsiveDrawer(props) {
       icon: analytics,
     },
     { title: 'Firms', url: 'firms', icon: firms },
-    {
-      title: 'Products',
-      url: 'products',
-      icon: cart,
-    },
+    { title: 'Brands', url: 'brands', icon: brand },
+
     {
       title: 'Purchases',
       url: 'purchases',
       icon: purchases,
     },
     { title: 'Sales', url: 'sales', icon: sales },
-    { title: 'Brands', url: 'brands', icon: brand },
+    {
+      title: 'Products',
+      url: 'products',
+      icon: cart,
+    },
   ];
   const drawer = (
     <div>
