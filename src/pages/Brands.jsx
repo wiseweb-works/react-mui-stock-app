@@ -9,12 +9,11 @@ import {
   CardActions,
   IconButton,
   CardMedia,
-  CircularProgress,
-  Box,
 } from '@mui/material';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getItem } from '../redux/reducer/dashboardReducer';
+import { deleteItem, getItem } from '../redux/reducer/dashboardReducer';
+import LoadingPlaceholder from '../components/LoadingPlaceholder';
 
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -29,9 +28,7 @@ const Brands = () => {
   }, [dispatch, token, brands.length]);
 
   return loading ? (
-    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-      <CircularProgress size="4rem" />
-    </Box>
+    <LoadingPlaceholder />
   ) : (
     <Container maxWidth="xl">
       <Typography sx={{ textAlign: 'center' }} variant="h4">
@@ -68,7 +65,13 @@ const Brands = () => {
                       <EditIcon />
                     </IconButton>
                     <IconButton aria-label="delete">
-                      <DeleteIcon />
+                      <DeleteIcon
+                        onClick={() =>
+                          dispatch(
+                            deleteItem({ item: 'brands', id: brand._id, token })
+                          )
+                        }
+                      />
                     </IconButton>
                   </CardActions>
                 </Card>

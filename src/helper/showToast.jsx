@@ -10,9 +10,3 @@ export const showToast = (type, message) => {
     toast.info(message, { position: 'top-right' });
   }
 };
-
-const ToastNotification = () => {
-  return <></>;
-};
-
-export default ToastNotification;

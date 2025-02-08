@@ -5,10 +5,6 @@ import {
   CssBaseline,
   Drawer,
   IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
   Toolbar,
   Typography,
 } from '@mui/material';
@@ -20,14 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../redux/reducer/authReducer';
 import { useEffect, useState } from 'react';
 
-import {
-  brand,
-  firms,
-  analytics,
-  cart,
-  purchases,
-  sales,
-} from '../assets/navbar';
+import DashboardList from '../components/DashboardList';
 
 const drawerWidth = 240;
 
@@ -58,67 +47,6 @@ function ResponsiveDrawer(props) {
       setMobileOpen(!mobileOpen);
     }
   };
-
-  const links = [
-    {
-      title: 'Dashboard',
-      url: '',
-      icon: analytics,
-    },
-    { title: 'Firms', url: 'firms', icon: firms },
-    { title: 'Brands', url: 'brands', icon: brand },
-
-    {
-      title: 'Purchases',
-      url: 'purchases',
-      icon: purchases,
-    },
-    { title: 'Sales', url: 'sales', icon: sales },
-    {
-      title: 'Products',
-      url: 'products',
-      icon: cart,
-    },
-  ];
-  const drawer = (
-    <div>
-      <Toolbar />
-      <List>
-        {links.map((text, index) => (
-          <ListItem key={index} disablePadding>
-            <ListItemButton
-              onClick={() => navigate(`${text.url}`)}
-              sx={{
-                color: 'secondary.main',
-                borderRadius: '1rem',
-                transition: 'all 0.7s ease-in-out ',
-                // '&.Mui-selected': {
-                //   backgroundColor: 'secondary.second',
-                //   color: 'white',
-                // },
-                '&:hover': {
-                  backgroundColor: 'secondary.second',
-                  color: 'white',
-                },
-              }}
-            >
-              <Box
-                component="img"
-                src={text.icon}
-                alt={text.title}
-                sx={{
-                  width: 24,
-                  height: 24,
-                  mr: 2,
-                }}
-              />
-              <ListItemText primary={text.title} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </div>
-  );
 
   // Remove this const when copying and pasting into your project.
   const container =
@@ -191,7 +119,7 @@ function ResponsiveDrawer(props) {
             },
           }}
         >
-          {drawer}
+          <DashboardList />
         </Drawer>
         <Drawer
           variant="permanent"
@@ -204,7 +132,7 @@ function ResponsiveDrawer(props) {
           }}
           open
         >
-          {drawer}
+          <DashboardList />
         </Drawer>
       </Box>
       <Box

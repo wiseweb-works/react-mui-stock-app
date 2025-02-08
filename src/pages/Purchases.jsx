@@ -4,22 +4,22 @@ import { Button, Container, Typography } from '@mui/material';
 import { useEffect } from 'react';
 import { getItem } from '../redux/reducer/dashboardReducer';
 import formatDate from '../components/formatDate';
+import LoadingPlaceholder from '../components/LoadingPlaceholder';
 
-// import EditIcon from '@mui/icons-material/Edit';
-// import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const Purchases = () => {
   const { purchases, loading } = useSelector((state) => state.dashboard);
   const rows = purchases.map((purchase, index) => ({
     id: index + 1,
     col1: formatDate(purchase.updatedAt),
-    col2: purchase.firmId.name,
-    col3: purchase.brandId.name,
-    col4: purchase.productId.name,
+    col2: purchase.firmId?.name,
+    col3: purchase.brandId?.name,
+    col4: purchase.productId?.name,
     col5: purchase.quantity,
     col6: purchase.price,
     col7: purchase.amount,
-    col8: 'edit',
   }));
 
   const columns = [
@@ -78,6 +78,12 @@ const Purchases = () => {
       width: 100,
       headerAlign: 'center',
       align: 'center',
+      renderCell: (params) => (
+        <>
+          <EditIcon onClick={() => console.log('Edit')}>Edit</EditIcon>
+          <DeleteIcon onClick={() => console.log('Delete')}>Delete</DeleteIcon>
+        </>
+      ),
     },
   ];
   const { token } = useSelector((state) => state.auth);
@@ -89,7 +95,9 @@ const Purchases = () => {
 
   console.log(purchases);
   // console.log(formatDate('2025-02-01T07:43:32.282Z'));
-  return (
+  return loading ? (
+    <LoadingPlaceholder />
+  ) : (
     <Container maxWidth="xl">
       <Typography sx={{ textAlign: 'center' }} variant="h4">
         Purchases

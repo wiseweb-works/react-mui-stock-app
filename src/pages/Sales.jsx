@@ -4,14 +4,18 @@ import { Button, Container, Typography } from '@mui/material';
 import { useEffect } from 'react';
 import { getItem } from '../redux/reducer/dashboardReducer';
 import formatDate from '../components/formatDate';
+import LoadingPlaceholder from '../components/LoadingPlaceholder';
+
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const Sales = () => {
   const { sales, loading } = useSelector((state) => state.dashboard);
   const rows = sales.map((sale, index) => ({
     id: index + 1,
     col1: formatDate(sale.updatedAt),
-    col2: sale.brandId.name,
-    col3: sale.productId.name,
+    col2: sale.brandId?.name,
+    col3: sale.productId?.name,
     col4: sale.quantity,
     col5: sale.price,
     col6: sale.amount,
@@ -67,6 +71,12 @@ const Sales = () => {
       width: 100,
       headerAlign: 'center',
       align: 'center',
+      renderCell: (params) => (
+        <>
+          <EditIcon onClick={() => console.log('Edit')}>Edit</EditIcon>
+          <DeleteIcon onClick={() => console.log('Delete')}>Delete</DeleteIcon>
+        </>
+      ),
     },
   ];
   const { token } = useSelector((state) => state.auth);
@@ -77,7 +87,9 @@ const Sales = () => {
   }, [dispatch, token, sales.length]);
 
   console.log(sales);
-  return (
+  return loading ? (
+    <LoadingPlaceholder />
+  ) : (
     <Container maxWidth="xl">
       <Typography sx={{ textAlign: 'center' }} variant="h4">
         Sales

@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getItem } from '../redux/reducer/dashboardReducer';
+import { getItem, deleteItem } from '../redux/reducer/dashboardReducer';
 import {
   Grid2,
   Card,
@@ -11,38 +11,45 @@ import {
   CardActions,
   Button,
   Container,
-  CircularProgress,
-  Box,
 } from '@mui/material';
+import LoadingPlaceholder from '../components/LoadingPlaceholder';
 
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import FirmModal from '../components/Modal/FirmModal';
 
 const Firms = () => {
   const { firms, loading } = useSelector((state) => state.dashboard);
   const { token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   useEffect(() => {
     if (!firms.length > 0) dispatch(getItem({ item: 'firms', token }));
   }, [dispatch, token, firms.length]);
 
   return loading ? (
-    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-      <CircularProgress size="4rem" />
-    </Box>
+    <LoadingPlaceholder />
   ) : (
     <Container maxWidth="lg">
       <Typography sx={{ textAlign: 'center' }} variant="h4">
         Firms
       </Typography>
-      <Button size="medium" color="primary" variant="contained">
+      <Button
+        size="medium"
+        color="primary"
+        variant="contained"
+        onClick={handleOpen}
+      >
         New Firm
       </Button>
       <Grid2 container spacing={2} mt={4}>
         {firms.map((firm) => {
           return (
-            <Grid2 key={firm.id} item size={3}>
+            <Grid2 key={firm._id} item size={3}>
               <Card
                 elevation={1}
                 sx={{
@@ -73,7 +80,13 @@ const Firms = () => {
                     <EditIcon />
                   </IconButton>
                   <IconButton aria-label="delete">
-                    <DeleteIcon />
+                    <DeleteIcon
+                      onClick={() =>
+                        dispatch(
+                          deleteItem({ item: 'firms', id: firm._id, token })
+                        )
+                      }
+                    />
                   </IconButton>
                 </CardActions>
               </Card>
@@ -81,6 +94,7 @@ const Firms = () => {
           );
         })}
       </Grid2>
+      <FirmModal open={open} handleClose={handleClose} />
     </Container>
   );
 };

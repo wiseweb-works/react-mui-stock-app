@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { showToast } from '../../helper/ToastNotification';
+import { showToast } from '../../helper/showToast';
 
 const initialState = {
   user: '',
