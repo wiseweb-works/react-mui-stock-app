@@ -2,6 +2,7 @@ import { Box, Button, Modal, TextField } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateItem, getItem } from '../../redux/reducer/dashboardReducer';
+import { handleEditClose } from '../../redux/reducer/modalReducer';
 
 const style = {
   position: 'absolute',
@@ -15,9 +16,10 @@ const style = {
   p: 4,
 };
 
-const FirmEditModal = ({ open, handleClose, firm }) => {
+const FirmEditModal = () => {
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
+  const { selected: firm, isEditOpen } = useSelector((state) => state.modal);
 
   const [info, setInfo] = useState({
     name: '',
@@ -44,7 +46,7 @@ const FirmEditModal = ({ open, handleClose, firm }) => {
     e.preventDefault();
     await dispatch(updateItem({ item: 'firms', id: firm._id, info, token }));
     dispatch(getItem({ item: 'firms', token }));
-    handleClose();
+    dispatch(handleEditClose());
   };
 
   const fields = [
@@ -56,8 +58,8 @@ const FirmEditModal = ({ open, handleClose, firm }) => {
 
   return (
     <Modal
-      open={open}
-      onClose={handleClose}
+      open={isEditOpen}
+      onClose={() => dispatch(handleEditClose())}
       aria-labelledby="modal-modal-title"
     >
       <Box sx={style}>

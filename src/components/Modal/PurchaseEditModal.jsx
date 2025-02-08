@@ -8,10 +8,11 @@ import {
   Select,
   TextField,
 } from '@mui/material';
+
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createItem, getItem } from '../../redux/reducer/dashboardReducer';
-import { handleClose } from '../../redux/reducer/modalReducer';
+import { updateItem, getItem } from '../../redux/reducer/dashboardReducer';
+import { handleEditClose } from '../../redux/reducer/modalReducer';
 
 const style = {
   position: 'absolute',
@@ -25,11 +26,13 @@ const style = {
   p: 4,
 };
 
-const PurchaseModal = () => {
+const PurchaseEditModal = () => {
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
   const { firms, brands, products } = useSelector((state) => state.dashboard);
-  const { open } = useSelector((state) => state.modal);
+  const { selected: purchase, isEditOpen } = useSelector(
+    (state) => state.modal
+  );
 
   const [info, setInfo] = useState({
     firmId: '',
@@ -40,49 +43,39 @@ const PurchaseModal = () => {
   });
 
   useEffect(() => {
+    if (purchase) {
+      setInfo({
+        firmId: firms.find((f) => f.name === purchase.col2)._id || '',
+        brandId: brands.find((f) => f.name === purchase.col3)._id || '',
+        productId: products.find((f) => f.name === purchase.col4)._id || '',
+        quantity: purchase.col5 || '',
+        price: purchase.col6 || '',
+      });
+    }
+  }, [purchase]);
+
+  useEffect(() => {
     if (!firms.length) dispatch(getItem({ item: 'firms', token }));
     if (!brands.length) dispatch(getItem({ item: 'brands', token }));
     if (!products.length) dispatch(getItem({ item: 'products', token }));
   }, [dispatch, token, firms.length, brands.length, products.length]);
 
-  const handleChange = (e) => {
-    setInfo((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
+  const handleChange = (e) =>
+    setInfo((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const purchaseData = {
-      firmId: info.firmId,
-      brandId: info.brandId,
-      productId: info.productId,
-      quantity: Number(info.quantity),
-      price: Number(info.price),
-    };
     await dispatch(
-      createItem({ item: 'purchases', info: purchaseData, token })
+      updateItem({ item: 'purchases', id: purchase.id, info, token })
     );
     dispatch(getItem({ item: 'purchases', token }));
-    dispatch(handleClose());
-    setInfo({
-      firmId: '',
-      brandId: '',
-      productId: '',
-      quantity: '',
-      price: '',
-    });
+    dispatch(handleEditClose());
   };
-
-  if (!firms.length || !brands.length || !products.length) {
-    return <p>Loading...</p>;
-  }
 
   return (
     <Modal
-      open={open}
-      onClose={() => dispatch(handleClose())}
+      open={isEditOpen}
+      onClose={() => dispatch(handleEditClose())}
       aria-labelledby="modal-modal-title"
     >
       <Box sx={style}>
@@ -163,7 +156,7 @@ const PurchaseModal = () => {
           />
 
           <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
-            SUBMIT PURCHASE
+            UPDATE PURCHASE
           </Button>
         </Box>
       </Box>
@@ -171,4 +164,4 @@ const PurchaseModal = () => {
   );
 };
 
-export default PurchaseModal;
+export default PurchaseEditModal;

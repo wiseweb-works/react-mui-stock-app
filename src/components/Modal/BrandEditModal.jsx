@@ -1,9 +1,8 @@
 import { Box, Button, Modal, TextField } from '@mui/material';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { createItem, getItem } from '../../redux/reducer/dashboardReducer';
-import { useSelector } from 'react-redux';
-import { handleClose } from '../../redux/reducer/modalReducer';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateItem, getItem } from '../../redux/reducer/dashboardReducer';
+import { handleEditClose } from '../../redux/reducer/modalReducer';
 
 const style = {
   position: 'absolute',
@@ -17,25 +16,33 @@ const style = {
   p: 4,
 };
 
-const BrandModal = () => {
+const BrandEditModal = () => {
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
-  const { open } = useSelector((state) => state.modal);
+  const { selected: brand, isEditOpen } = useSelector((state) => state.modal);
 
   const [info, setInfo] = useState({
     name: '',
     image: '',
   });
 
+  useEffect(() => {
+    if (brand) {
+      setInfo({
+        name: brand.name || '',
+        image: brand.image || '',
+      });
+    }
+  }, [brand]);
+
   const handleChange = (e) =>
     setInfo((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await dispatch(createItem({ item: 'brands', info, token }));
+    await dispatch(updateItem({ item: 'brands', id: brand._id, info, token }));
     dispatch(getItem({ item: 'brands', token }));
-    dispatch(handleClose());
-    setInfo({ name: '', image: '' });
+    dispatch(handleEditClose());
   };
 
   const fields = [
@@ -45,8 +52,8 @@ const BrandModal = () => {
 
   return (
     <Modal
-      open={open}
-      onClose={() => dispatch(handleClose())}
+      open={isEditOpen}
+      onClose={() => dispatch(handleEditClose())}
       aria-labelledby="modal-modal-title"
     >
       <Box sx={style}>
@@ -66,7 +73,7 @@ const BrandModal = () => {
             />
           ))}
           <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
-            SUBMIT BRAND
+            UPDATE BRAND
           </Button>
         </Box>
       </Box>
@@ -74,4 +81,4 @@ const BrandModal = () => {
   );
 };
 
-export default BrandModal;
+export default BrandEditModal;

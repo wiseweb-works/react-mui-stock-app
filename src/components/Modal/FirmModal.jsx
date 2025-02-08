@@ -1,8 +1,8 @@
 import { Box, Button, Modal, TextField } from '@mui/material';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createItem, getItem } from '../../redux/reducer/dashboardReducer';
-import { useSelector } from 'react-redux';
+import { handleClose } from '../../redux/reducer/modalReducer';
 
 const style = {
   position: 'absolute',
@@ -16,9 +16,11 @@ const style = {
   p: 4,
 };
 
-const FirmModal = ({ open, handleClose }) => {
+const FirmModal = () => {
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
+  const { open } = useSelector((state) => state.modal);
+
   const [info, setInfo] = useState({
     name: '',
     address: '',
@@ -33,7 +35,7 @@ const FirmModal = ({ open, handleClose }) => {
     e.preventDefault();
     await dispatch(createItem({ item: 'firms', info, token }));
     dispatch(getItem({ item: 'firms', token }));
-    handleClose();
+    dispatch(handleClose());
     setInfo({ name: '', address: '', phone: '', image: '' });
   };
 
@@ -47,7 +49,7 @@ const FirmModal = ({ open, handleClose }) => {
   return (
     <Modal
       open={open}
-      onClose={handleClose}
+      onClose={() => dispatch(handleClose())}
       aria-labelledby="modal-modal-title"
     >
       <Box sx={style}>
