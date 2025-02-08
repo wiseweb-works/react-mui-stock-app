@@ -17,6 +17,7 @@ import LoadingPlaceholder from '../components/LoadingPlaceholder';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FirmModal from '../components/Modal/FirmModal';
+import FirmEditModal from '../components/Modal/FirmEditModal';
 
 const Firms = () => {
   const { firms, loading } = useSelector((state) => state.dashboard);
@@ -26,6 +27,14 @@ const Firms = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const [selectedFirm, setSelectedFirm] = useState(null);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+
+  const handleEditClick = (firm) => {
+    setSelectedFirm(firm);
+    setIsEditOpen(true);
+  };
 
   useEffect(() => {
     if (!firms.length > 0) dispatch(getItem({ item: 'firms', token }));
@@ -77,7 +86,7 @@ const Firms = () => {
                 </CardContent>
                 <CardActions sx={{ justifyContent: 'center' }}>
                   <IconButton aria-label="edit">
-                    <EditIcon />
+                    <EditIcon onClick={() => handleEditClick(firm)} />
                   </IconButton>
                   <IconButton aria-label="delete">
                     <DeleteIcon
@@ -95,6 +104,11 @@ const Firms = () => {
         })}
       </Grid2>
       <FirmModal open={open} handleClose={handleClose} />
+      <FirmEditModal
+        open={isEditOpen}
+        handleClose={() => setIsEditOpen(false)}
+        firm={selectedFirm}
+      />
     </Container>
   );
 };

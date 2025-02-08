@@ -49,9 +49,9 @@ export const createItem = createAsyncThunk(
 
 export const updateItem = createAsyncThunk(
   'dashboard/updateItem',
-  async ({ item, info, token }, { rejectWithValue }) => {
+  async ({ item, id, info, token }, { rejectWithValue }) => {
     try {
-      const response = await axios.put(`${API_URL}/${item}/`, info, {
+      const response = await axios.put(`${API_URL}/${item}/${id}`, info, {
         headers: {
           Authorization: `Token ${token}`,
         },
