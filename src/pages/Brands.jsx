@@ -10,22 +10,32 @@ import {
   IconButton,
   CardMedia,
 } from '@mui/material';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteItem, getItem } from '../redux/reducer/dashboardReducer';
 import LoadingPlaceholder from '../components/LoadingPlaceholder';
 
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import BrandModal from '../components/Modal/BrandModal';
 
 const Brands = () => {
   const { brands, loading } = useSelector((state) => state.dashboard);
   const { token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   useEffect(() => {
     if (!brands.length > 0) dispatch(getItem({ item: 'brands', token }));
   }, [dispatch, token, brands.length]);
+
+  const deleteHandle = async (ID) => {
+    await dispatch(deleteItem({ item: 'brands', id: ID, token }));
+    dispatch(getItem({ item: 'brands', token }));
+  };
 
   return loading ? (
     <LoadingPlaceholder />
@@ -34,8 +44,13 @@ const Brands = () => {
       <Typography sx={{ textAlign: 'center' }} variant="h4">
         Brands
       </Typography>
-      <Button size="medium" color="primary" variant="contained">
-        New Brands
+      <Button
+        size="medium"
+        color="primary"
+        variant="contained"
+        onClick={handleOpen}
+      >
+        New Brand
       </Button>
       <Grid2 container spacing={2} mt={4}>
         {brands.map((brand) => {
@@ -65,13 +80,7 @@ const Brands = () => {
                       <EditIcon />
                     </IconButton>
                     <IconButton aria-label="delete">
-                      <DeleteIcon
-                        onClick={() =>
-                          dispatch(
-                            deleteItem({ item: 'brands', id: brand._id, token })
-                          )
-                        }
-                      />
+                      <DeleteIcon onClick={() => deleteHandle(brand._id)} />
                     </IconButton>
                   </CardActions>
                 </Card>
@@ -80,6 +89,7 @@ const Brands = () => {
           );
         })}
       </Grid2>
+      <BrandModal open={open} handleClose={handleClose} />
     </Container>
   );
 };

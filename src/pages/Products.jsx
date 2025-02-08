@@ -1,23 +1,47 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { Button, Container, Typography } from '@mui/material';
-import { useEffect } from 'react';
-import { getItem } from '../redux/reducer/dashboardReducer';
+import { useEffect, useState } from 'react';
+import { deleteItem, getItem } from '../redux/reducer/dashboardReducer';
 import LoadingPlaceholder from '../components/LoadingPlaceholder';
 
-import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import ProductModal from '../components/Modal/ProductModal';
 
 const Products = () => {
   const { products, loading } = useSelector((state) => state.dashboard);
-  const rows = products.map((product, index) => ({
-    id: index,
+  const { token } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  useEffect(() => {
+    if (!products.length > 0) dispatch(getItem({ item: 'products', token }));
+  }, [dispatch, token, products.length]);
+
+  const deleteHandle = async (ID) => {
+    await dispatch(deleteItem({ item: 'products', id: ID, token }));
+    dispatch(getItem({ item: 'products', token }));
+  };
+
+  const renderActions = (params) => (
+    <>
+      <DeleteIcon
+        onClick={() => deleteHandle(params.row.id)}
+        style={{ cursor: 'pointer', color: 'red' }}
+      />
+    </>
+  );
+
+  const rows = products.map((product) => ({
+    id: product._id,
     col1: product._id,
     col2: product.categoryId?.name,
     col3: product.brandId?.name,
     col4: product.name,
     col5: product.quantity,
-    col6: 'edit',
   }));
 
   const columns = [
@@ -62,22 +86,9 @@ const Products = () => {
       width: 180,
       headerAlign: 'center',
       align: 'center',
-      renderCell: (params) => (
-        <>
-          <EditIcon onClick={() => console.log('Edit')}>Edit</EditIcon>
-          <DeleteIcon onClick={() => console.log('Delete')}>Delete</DeleteIcon>
-        </>
-      ),
+      renderCell: renderActions,
     },
   ];
-  const { token } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (!products.length > 0) dispatch(getItem({ item: 'products', token }));
-  }, [dispatch, token, products.length]);
-
-  console.log(products);
 
   return loading ? (
     <LoadingPlaceholder />
@@ -86,7 +97,12 @@ const Products = () => {
       <Typography sx={{ textAlign: 'center' }} variant="h4">
         Products
       </Typography>
-      <Button size="medium" color="primary" variant="contained">
+      <Button
+        size="medium"
+        color="primary"
+        variant="contained"
+        onClick={handleOpen}
+      >
         New Product
       </Button>
       <DataGrid
@@ -96,11 +112,11 @@ const Products = () => {
           pagination: { paginationModel: { pageSize: 5 } },
         }}
         pageSizeOptions={[5, 10, 25]}
-        // checkboxSelection
         // disableSelectionOnClick
         slots={{ toolbar: GridToolbar }}
         sx={{ mt: '1rem' }}
       />
+      <ProductModal open={open} handleClose={handleClose} />
     </Container>
   );
 };

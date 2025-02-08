@@ -16,32 +16,27 @@ const style = {
   p: 4,
 };
 
-const FirmModal = ({ open, handleClose }) => {
+const BrandModal = ({ open, handleClose }) => {
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
   const [info, setInfo] = useState({
     name: '',
-    address: '',
-    phone: '',
     image: '',
   });
-
   const handleChange = (e) =>
     setInfo((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await dispatch(createItem({ item: 'firms', info, token }));
-    dispatch(getItem({ item: 'firms', token }));
+    await dispatch(createItem({ item: 'brands', info, token }));
+    dispatch(getItem({ item: 'brands', token }));
     handleClose();
-    setInfo({ name: '', address: '', phone: '', image: '' });
+    setInfo({ name: '', image: '' });
   };
 
   const fields = [
-    { label: 'Firm Name *', name: 'name', type: 'text' },
-    { label: 'Firm Address', name: 'address', type: 'text' },
-    { label: 'Firm Phone', name: 'phone', type: 'text' },
-    { label: 'Firm Image', name: 'image', type: 'url' },
+    { label: 'Brand Name *', name: 'name', type: 'text' },
+    { label: 'Brand Logo', name: 'image', type: 'url' },
   ];
 
   return (
@@ -75,4 +70,4 @@ const FirmModal = ({ open, handleClose }) => {
   );
 };
 
-export default FirmModal;
+export default BrandModal;

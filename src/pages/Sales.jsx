@@ -1,25 +1,54 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { Button, Container, Typography } from '@mui/material';
-import { useEffect } from 'react';
-import { getItem } from '../redux/reducer/dashboardReducer';
+import { useEffect, useState } from 'react';
+import { deleteItem, getItem } from '../redux/reducer/dashboardReducer';
 import formatDate from '../components/formatDate';
 import LoadingPlaceholder from '../components/LoadingPlaceholder';
 
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import SaleModal from '../components/Modal/SaleModal';
 
 const Sales = () => {
   const { sales, loading } = useSelector((state) => state.dashboard);
-  const rows = sales.map((sale, index) => ({
-    id: index + 1,
+  const { token } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  useEffect(() => {
+    if (!sales.length > 0) dispatch(getItem({ item: 'sales', token }));
+  }, [dispatch, token, sales.length]);
+
+  const deleteHandle = async (ID) => {
+    await dispatch(deleteItem({ item: 'sales', id: ID, token }));
+    dispatch(getItem({ item: 'sales', token }));
+  };
+
+  const renderActions = (params) => (
+    <>
+      <EditIcon
+        onClick={() => console.log('Edit')}
+        style={{ cursor: 'pointer', marginRight: 8 }}
+      />
+      <DeleteIcon
+        onClick={() => deleteHandle(params.row.id)}
+        style={{ cursor: 'pointer', color: 'red' }}
+      />
+    </>
+  );
+
+  const rows = sales.map((sale) => ({
+    id: sale._id,
     col1: formatDate(sale.updatedAt),
     col2: sale.brandId?.name,
     col3: sale.productId?.name,
     col4: sale.quantity,
     col5: sale.price,
     col6: sale.amount,
-    col7: 'edit',
   }));
 
   const columns = [
@@ -71,22 +100,10 @@ const Sales = () => {
       width: 100,
       headerAlign: 'center',
       align: 'center',
-      renderCell: (params) => (
-        <>
-          <EditIcon onClick={() => console.log('Edit')}>Edit</EditIcon>
-          <DeleteIcon onClick={() => console.log('Delete')}>Delete</DeleteIcon>
-        </>
-      ),
+      renderCell: renderActions,
     },
   ];
-  const { token } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (!sales.length > 0) dispatch(getItem({ item: 'sales', token }));
-  }, [dispatch, token, sales.length]);
-
-  console.log(sales);
   return loading ? (
     <LoadingPlaceholder />
   ) : (
@@ -94,7 +111,12 @@ const Sales = () => {
       <Typography sx={{ textAlign: 'center' }} variant="h4">
         Sales
       </Typography>
-      <Button size="medium" color="primary" variant="contained">
+      <Button
+        size="medium"
+        color="primary"
+        variant="contained"
+        onClick={handleOpen}
+      >
         New Sale
       </Button>
       <DataGrid
@@ -104,11 +126,10 @@ const Sales = () => {
           pagination: { paginationModel: { pageSize: 5 } },
         }}
         pageSizeOptions={[5, 10, 25]}
-        // checkboxSelection
-        // disableSelectionOnClick
         slots={{ toolbar: GridToolbar }}
         sx={{ mt: '1rem' }}
       />
+      <SaleModal open={open} handleClose={handleClose} />
     </Container>
   );
 };

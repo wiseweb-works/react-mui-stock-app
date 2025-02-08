@@ -1,18 +1,48 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { Button, Container, Typography } from '@mui/material';
-import { useEffect } from 'react';
-import { getItem } from '../redux/reducer/dashboardReducer';
+import { useEffect, useState } from 'react';
+import { deleteItem, getItem } from '../redux/reducer/dashboardReducer';
 import formatDate from '../components/formatDate';
 import LoadingPlaceholder from '../components/LoadingPlaceholder';
+import PurchaseModal from '../components/Modal/PurchaseModal';
 
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const Purchases = () => {
   const { purchases, loading } = useSelector((state) => state.dashboard);
-  const rows = purchases.map((purchase, index) => ({
-    id: index + 1,
+  const { token } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  useEffect(() => {
+    if (!purchases.length) dispatch(getItem({ item: 'purchases', token }));
+  }, [dispatch, token, purchases.length]);
+
+  const deleteHandle = async (ID) => {
+    await dispatch(deleteItem({ item: 'purchases', id: ID, token }));
+    dispatch(getItem({ item: 'purchases', token }));
+  };
+
+  const renderActions = (params) => (
+    <>
+      <EditIcon
+        onClick={() => console.log('Edit')}
+        style={{ cursor: 'pointer', marginRight: 8 }}
+      />
+      <DeleteIcon
+        onClick={() => deleteHandle(params.row.id)}
+        style={{ cursor: 'pointer', color: 'red' }}
+      />
+    </>
+  );
+
+  const rows = purchases.map((purchase) => ({
+    id: purchase._id,
     col1: formatDate(purchase.updatedAt),
     col2: purchase.firmId?.name,
     col3: purchase.brandId?.name,
@@ -78,23 +108,10 @@ const Purchases = () => {
       width: 100,
       headerAlign: 'center',
       align: 'center',
-      renderCell: (params) => (
-        <>
-          <EditIcon onClick={() => console.log('Edit')}>Edit</EditIcon>
-          <DeleteIcon onClick={() => console.log('Delete')}>Delete</DeleteIcon>
-        </>
-      ),
+      renderCell: renderActions,
     },
   ];
-  const { token } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (!purchases.length > 0) dispatch(getItem({ item: 'purchases', token }));
-  }, [dispatch, token, purchases.length]);
-
-  console.log(purchases);
-  // console.log(formatDate('2025-02-01T07:43:32.282Z'));
   return loading ? (
     <LoadingPlaceholder />
   ) : (
@@ -102,7 +119,12 @@ const Purchases = () => {
       <Typography sx={{ textAlign: 'center' }} variant="h4">
         Purchases
       </Typography>
-      <Button size="medium" color="primary" variant="contained">
+      <Button
+        size="medium"
+        color="primary"
+        variant="contained"
+        onClick={handleOpen}
+      >
         New Purchase
       </Button>
       <DataGrid
@@ -112,11 +134,10 @@ const Purchases = () => {
           pagination: { paginationModel: { pageSize: 5 } },
         }}
         pageSizeOptions={[5, 10, 25]}
-        // checkboxSelection
-        // disableSelectionOnClick
         slots={{ toolbar: GridToolbar }}
         sx={{ mt: '1rem' }}
       />
+      <PurchaseModal open={open} handleClose={handleClose} />
     </Container>
   );
 };
