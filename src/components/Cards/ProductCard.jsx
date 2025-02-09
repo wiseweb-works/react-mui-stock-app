@@ -1,26 +1,19 @@
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import formatDate from '../formatDate';
 import { deleteItem, getItem } from '../../redux/reducer/dashboardReducer';
 import { useDispatch, useSelector } from 'react-redux';
-import { handleEditClick } from '../../redux/reducer/modalReducer';
 
-const PurchaseCard = ({ purchases }) => {
+const ProductCard = ({ products }) => {
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
 
   const deleteHandle = async (ID) => {
-    await dispatch(deleteItem({ item: 'purchases', id: ID, token }));
-    dispatch(getItem({ item: 'purchases', token }));
+    await dispatch(deleteItem({ item: 'products', id: ID, token }));
+    dispatch(getItem({ item: 'products', token }));
   };
 
   const renderActions = (params) => (
     <>
-      <EditIcon
-        onClick={() => dispatch(handleEditClick(params.row))}
-        style={{ cursor: 'pointer', marginRight: 8 }}
-      />
       <DeleteIcon
         onClick={() => deleteHandle(params.row.id)}
         style={{ cursor: 'pointer', color: 'red' }}
@@ -28,71 +21,55 @@ const PurchaseCard = ({ purchases }) => {
     </>
   );
 
-  const rows = purchases.map((purchase) => ({
-    id: purchase._id,
-    col1: formatDate(purchase.updatedAt),
-    col2: purchase.firmId?.name,
-    col3: purchase.brandId?.name,
-    col4: purchase.productId?.name,
-    col5: purchase.quantity,
-    col6: purchase.price,
-    col7: purchase.amount,
+  const rows = products.map((product) => ({
+    id: product._id,
+    col1: product._id,
+    col2: product.categoryId?.name,
+    col3: product.brandId?.name,
+    col4: product.name,
+    col5: product.quantity,
   }));
 
   const columns = [
     {
       field: 'col1',
-      headerName: 'Date',
-      width: 150,
+      headerName: 'ID',
+      width: 70,
       headerAlign: 'center',
       align: 'center',
     },
     {
       field: 'col2',
-      headerName: 'Firm',
-      width: 310,
+      headerName: 'Category',
+      width: 365,
       headerAlign: 'center',
       align: 'center',
     },
     {
       field: 'col3',
       headerName: 'Brand',
-      width: 310,
+      width: 365,
       headerAlign: 'center',
       align: 'center',
     },
     {
       field: 'col4',
-      headerName: 'Product',
-      width: 310,
+      headerName: 'Product Name',
+      width: 365,
       headerAlign: 'center',
       align: 'center',
     },
     {
       field: 'col5',
-      headerName: 'Quantity',
-      width: 100,
+      headerName: 'Stock',
+      width: 140,
       headerAlign: 'center',
       align: 'center',
     },
     {
       field: 'col6',
-      headerName: 'Price',
-      width: 100,
-      headerAlign: 'center',
-      align: 'center',
-    },
-    {
-      field: 'col7',
-      headerName: 'Amount',
-      width: 100,
-      headerAlign: 'center',
-      align: 'center',
-    },
-    {
-      field: 'col8',
-      headerName: 'Actions',
-      width: 100,
+      headerName: 'Action',
+      width: 180,
       headerAlign: 'center',
       align: 'center',
       renderCell: renderActions,
@@ -113,4 +90,4 @@ const PurchaseCard = ({ purchases }) => {
   );
 };
 
-export default PurchaseCard;
+export default ProductCard;

@@ -1,108 +1,21 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { Button, Container, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { deleteItem, getItem } from '../redux/reducer/dashboardReducer';
-import formatDate from '../components/formatDate';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getItem } from '../redux/reducer/dashboardReducer';
 import LoadingPlaceholder from '../components/LoadingPlaceholder';
-
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 import SaleModal from '../components/Modal/SaleModal';
+import SaleCard from '../components/Cards/SaleCard';
+import { handleOpen } from '../redux/reducer/modalReducer';
+import SaleEditModal from '../components/Modal/SaleEditModal';
 
 const Sales = () => {
   const { sales, loading } = useSelector((state) => state.dashboard);
   const { token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
   useEffect(() => {
     if (!sales.length > 0) dispatch(getItem({ item: 'sales', token }));
   }, [dispatch, token, sales.length]);
-
-  const deleteHandle = async (ID) => {
-    await dispatch(deleteItem({ item: 'sales', id: ID, token }));
-    dispatch(getItem({ item: 'sales', token }));
-  };
-
-  const renderActions = (params) => (
-    <>
-      <EditIcon
-        onClick={() => console.log('Edit')}
-        style={{ cursor: 'pointer', marginRight: 8 }}
-      />
-      <DeleteIcon
-        onClick={() => deleteHandle(params.row.id)}
-        style={{ cursor: 'pointer', color: 'red' }}
-      />
-    </>
-  );
-
-  const rows = sales.map((sale) => ({
-    id: sale._id,
-    col1: formatDate(sale.updatedAt),
-    col2: sale.brandId?.name,
-    col3: sale.productId?.name,
-    col4: sale.quantity,
-    col5: sale.price,
-    col6: sale.amount,
-  }));
-
-  const columns = [
-    {
-      field: 'col1',
-      headerName: 'Date',
-      width: 150,
-      headerAlign: 'center',
-      align: 'center',
-    },
-    {
-      field: 'col2',
-      headerName: 'Brand',
-      width: 467,
-      headerAlign: 'center',
-      align: 'center',
-    },
-    {
-      field: 'col3',
-      headerName: 'Product',
-      width: 467,
-      headerAlign: 'center',
-      align: 'center',
-    },
-    {
-      field: 'col4',
-      headerName: 'Quantity',
-      width: 100,
-      headerAlign: 'center',
-      align: 'center',
-    },
-    {
-      field: 'col5',
-      headerName: 'Price',
-      width: 100,
-      headerAlign: 'center',
-      align: 'center',
-    },
-    {
-      field: 'col6',
-      headerName: 'Amount',
-      width: 100,
-      headerAlign: 'center',
-      align: 'center',
-    },
-    {
-      field: 'col7',
-      headerName: 'Actions',
-      width: 100,
-      headerAlign: 'center',
-      align: 'center',
-      renderCell: renderActions,
-    },
-  ];
 
   return loading ? (
     <LoadingPlaceholder />
@@ -115,21 +28,13 @@ const Sales = () => {
         size="medium"
         color="primary"
         variant="contained"
-        onClick={handleOpen}
+        onClick={() => dispatch(handleOpen())}
       >
         New Sale
       </Button>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        initialState={{
-          pagination: { paginationModel: { pageSize: 5 } },
-        }}
-        pageSizeOptions={[5, 10, 25]}
-        slots={{ toolbar: GridToolbar }}
-        sx={{ mt: '1rem' }}
-      />
-      <SaleModal open={open} handleClose={handleClose} />
+      <SaleCard sales={sales} />
+      <SaleModal />
+      <SaleEditModal />
     </Container>
   );
 };

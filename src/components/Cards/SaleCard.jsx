@@ -6,13 +6,13 @@ import { deleteItem, getItem } from '../../redux/reducer/dashboardReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { handleEditClick } from '../../redux/reducer/modalReducer';
 
-const PurchaseCard = ({ purchases }) => {
+const SaleCard = ({ sales }) => {
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
 
   const deleteHandle = async (ID) => {
-    await dispatch(deleteItem({ item: 'purchases', id: ID, token }));
-    dispatch(getItem({ item: 'purchases', token }));
+    await dispatch(deleteItem({ item: 'sales', id: ID, token }));
+    dispatch(getItem({ item: 'sales', token }));
   };
 
   const renderActions = (params) => (
@@ -28,15 +28,14 @@ const PurchaseCard = ({ purchases }) => {
     </>
   );
 
-  const rows = purchases.map((purchase) => ({
-    id: purchase._id,
-    col1: formatDate(purchase.updatedAt),
-    col2: purchase.firmId?.name,
-    col3: purchase.brandId?.name,
-    col4: purchase.productId?.name,
-    col5: purchase.quantity,
-    col6: purchase.price,
-    col7: purchase.amount,
+  const rows = sales.map((sale) => ({
+    id: sale._id,
+    col1: formatDate(sale.updatedAt),
+    col2: sale.brandId?.name,
+    col3: sale.productId?.name,
+    col4: sale.quantity,
+    col5: sale.price,
+    col6: sale.amount,
   }));
 
   const columns = [
@@ -49,48 +48,41 @@ const PurchaseCard = ({ purchases }) => {
     },
     {
       field: 'col2',
-      headerName: 'Firm',
-      width: 310,
+      headerName: 'Brand',
+      width: 467,
       headerAlign: 'center',
       align: 'center',
     },
     {
       field: 'col3',
-      headerName: 'Brand',
-      width: 310,
+      headerName: 'Product',
+      width: 467,
       headerAlign: 'center',
       align: 'center',
     },
     {
       field: 'col4',
-      headerName: 'Product',
-      width: 310,
-      headerAlign: 'center',
-      align: 'center',
-    },
-    {
-      field: 'col5',
       headerName: 'Quantity',
       width: 100,
       headerAlign: 'center',
       align: 'center',
     },
     {
-      field: 'col6',
+      field: 'col5',
       headerName: 'Price',
       width: 100,
       headerAlign: 'center',
       align: 'center',
     },
     {
-      field: 'col7',
+      field: 'col6',
       headerName: 'Amount',
       width: 100,
       headerAlign: 'center',
       align: 'center',
     },
     {
-      field: 'col8',
+      field: 'col7',
       headerName: 'Actions',
       width: 100,
       headerAlign: 'center',
@@ -113,4 +105,4 @@ const PurchaseCard = ({ purchases }) => {
   );
 };
 
-export default PurchaseCard;
+export default SaleCard;

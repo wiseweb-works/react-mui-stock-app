@@ -11,6 +11,7 @@ import {
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createItem, getItem } from '../../redux/reducer/dashboardReducer';
+import { handleClose } from '../../redux/reducer/modalReducer';
 
 const style = {
   position: 'absolute',
@@ -23,11 +24,11 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-
-const ProductModal = ({ open, handleClose }) => {
+const ProductModal = () => {
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
   const { categories, brands } = useSelector((state) => state.dashboard);
+  const { open } = useSelector((state) => state.modal);
 
   const [info, setInfo] = useState({
     categoryId: '',
@@ -49,17 +50,14 @@ const ProductModal = ({ open, handleClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const productsData = {
       categoryId: info.categoryId,
       brandId: info.brandId,
       name: info.name,
     };
-
     await dispatch(createItem({ item: 'products', info: productsData, token }));
     dispatch(getItem({ item: 'products', token }));
-    handleClose();
-
+    dispatch(handleClose());
     setInfo({
       categoryId: '',
       brandId: '',
@@ -74,7 +72,7 @@ const ProductModal = ({ open, handleClose }) => {
   return (
     <Modal
       open={open}
-      onClose={handleClose}
+      onClose={() => dispatch(handleClose())}
       aria-labelledby="modal-modal-title"
     >
       <Box sx={style}>

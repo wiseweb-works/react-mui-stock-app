@@ -8,10 +8,11 @@ import {
   Select,
   TextField,
 } from '@mui/material';
+
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createItem, getItem } from '../../redux/reducer/dashboardReducer';
-import { handleClose } from '../../redux/reducer/modalReducer';
+import { updateItem, getItem } from '../../redux/reducer/dashboardReducer';
+import { handleEditClose } from '../../redux/reducer/modalReducer';
 
 const style = {
   position: 'absolute',
@@ -25,11 +26,11 @@ const style = {
   p: 4,
 };
 
-const SaleModal = () => {
+const SaleEditModal = () => {
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
   const { brands, products } = useSelector((state) => state.dashboard);
-  const { open } = useSelector((state) => state.modal);
+  const { selected: sale, isEditOpen } = useSelector((state) => state.modal);
 
   const [info, setInfo] = useState({
     brandId: '',
@@ -39,47 +40,35 @@ const SaleModal = () => {
   });
 
   useEffect(() => {
+    if (sale) {
+      setInfo({
+        brandId: brands.find((f) => f.name === sale.col2)?._id || '',
+        productId: products.find((f) => f.name === sale.col3)?._id || '',
+        quantity: sale.col4 || '',
+        price: sale.col5 || '',
+      });
+    }
+  }, [sale, brands, products]);
+
+  useEffect(() => {
     if (!brands.length) dispatch(getItem({ item: 'brands', token }));
     if (!products.length) dispatch(getItem({ item: 'products', token }));
   }, [dispatch, token, brands.length, products.length]);
 
-  const handleChange = (e) => {
-    setInfo((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
+  const handleChange = (e) =>
+    setInfo((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const saleData = {
-      brandId: info.brandId,
-      productId: info.productId,
-      quantity: Number(info.quantity),
-      price: Number(info.price),
-    };
-
-    await dispatch(createItem({ item: 'sales', info: saleData, token }));
+    await dispatch(updateItem({ item: 'sales', id: sale.id, info, token }));
     dispatch(getItem({ item: 'sales', token }));
-    dispatch(handleClose());
-
-    setInfo({
-      brandId: '',
-      productId: '',
-      quantity: '',
-      price: '',
-    });
+    dispatch(handleEditClose());
   };
-
-  if (!brands.length || !products.length) {
-    return <p>Loading...</p>;
-  }
 
   return (
     <Modal
-      open={open}
-      onClose={() => dispatch(handleClose())}
+      open={isEditOpen}
+      onClose={() => dispatch(handleEditClose())}
       aria-labelledby="modal-modal-title"
     >
       <Box sx={style}>
@@ -143,7 +132,7 @@ const SaleModal = () => {
           />
 
           <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
-            SUBMIT SALES
+            UPDATE SALES
           </Button>
         </Box>
       </Box>
@@ -151,4 +140,4 @@ const SaleModal = () => {
   );
 };
 
-export default SaleModal;
+export default SaleEditModal;

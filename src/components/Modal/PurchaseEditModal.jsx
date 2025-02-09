@@ -45,14 +45,14 @@ const PurchaseEditModal = () => {
   useEffect(() => {
     if (purchase) {
       setInfo({
-        firmId: firms.find((f) => f.name === purchase.col2)._id || '',
-        brandId: brands.find((f) => f.name === purchase.col3)._id || '',
-        productId: products.find((f) => f.name === purchase.col4)._id || '',
+        firmId: firms.find((f) => f.name === purchase.col2)?._id || '',
+        brandId: brands.find((f) => f.name === purchase.col3)?._id || '',
+        productId: products.find((f) => f.name === purchase.col4)?._id || '',
         quantity: purchase.col5 || '',
         price: purchase.col6 || '',
       });
     }
-  }, [purchase]);
+  }, [purchase, firms, brands, products]);
 
   useEffect(() => {
     if (!firms.length) dispatch(getItem({ item: 'firms', token }));
