@@ -15,11 +15,10 @@ class ErrorBoundary extends React.Component {
   }
 
   render() {
-    // Eğer bir hata olduysa istediğimiz bir UI döndürelim
     if (this.state.error) {
       return (
         <div>
-          Bir hata oluştu:
+          An error occurred:
           <pre>{this.state.error.stack}</pre>
         </div>
       );

@@ -18,9 +18,8 @@ const RegisterForm = ({
         value={values.username}
         onChange={handleChange}
         error={touched.username && errors.username}
-        helperText={touched.username && errors.username} //validationda verdiğimiz kalıba uymazsa rengi errora çevirmesi için error attribute ı benden false/true degeri bekliyor ondan dolayı daha sağlıklı olması için boolean deger döndürüyoruz.
-        // touched da kullanıcının inputa tıklayıp tıklamadığını yakalıyor
-        onBlur={handleBlur} // kullanıcının input alanından ayrıldığını yaklayan event
+        helperText={touched.username && errors.username}
+        onBlur={handleBlur}
         margin="normal"
       />
       <TextField
@@ -31,9 +30,8 @@ const RegisterForm = ({
         value={values.firstName}
         onChange={handleChange}
         error={touched.firstName && errors.firstName}
-        helperText={touched.firstName && errors.firstName} //validationda verdiğimiz kalıba uymazsa rengi errora çevirmesi için error attribute ı benden false/true degeri bekliyor ondan dolayı daha sağlıklı olması için boolean deger döndürüyoruz.
-        // touched da kullanıcının inputa tıklayıp tıklamadığını yakalıyor
-        onBlur={handleBlur} // kullanıcının input alanından ayrıldığını yaklayan event
+        helperText={touched.firstName && errors.firstName}
+        onBlur={handleBlur}
         margin="normal"
       />
       <TextField
@@ -44,9 +42,8 @@ const RegisterForm = ({
         value={values.lastName}
         onChange={handleChange}
         error={touched.lastName && errors.lastName}
-        helperText={touched.lastName && errors.lastName} //validationda verdiğimiz kalıba uymazsa rengi errora çevirmesi için error attribute ı benden false/true degeri bekliyor ondan dolayı daha sağlıklı olması için boolean deger döndürüyoruz.
-        // touched da kullanıcının inputa tıklayıp tıklamadığını yakalıyor
-        onBlur={handleBlur} // kullanıcının input alanından ayrıldığını yaklayan event
+        helperText={touched.lastName && errors.lastName}
+        onBlur={handleBlur}
         margin="normal"
       />
       <TextField
@@ -57,9 +54,8 @@ const RegisterForm = ({
         value={values.email}
         onChange={handleChange}
         error={touched.email && errors.email}
-        helperText={touched.email && errors.email} //validationda verdiğimiz kalıba uymazsa rengi errora çevirmesi için error attribute ı benden false/true degeri bekliyor ondan dolayı daha sağlıklı olması için boolean deger döndürüyoruz.
-        // touched da kullanıcının inputa tıklayıp tıklamadığını yakalıyor
-        onBlur={handleBlur} // kullanıcının input alanından ayrıldığını yaklayan event
+        helperText={touched.email && errors.email}
+        onBlur={handleBlur}
         margin="normal"
         type="email"
       />
@@ -71,9 +67,8 @@ const RegisterForm = ({
         value={values.password}
         onChange={handleChange}
         error={touched.password && errors.password}
-        helperText={touched.password && errors.password} //validationda verdiğimiz kalıba uymazsa rengi errora çevirmesi için error attribute ı benden false/true degeri bekliyor ondan dolayı daha sağlıklı olması için boolean deger döndürüyoruz.
-        // touched da kullanıcının inputa tıklayıp tıklamadığını yakalıyor
-        onBlur={handleBlur} // kullanıcının input alanından ayrıldığını yaklayan event
+        helperText={touched.password && errors.password}
+        onBlur={handleBlur}
         margin="normal"
         type="password"
       />

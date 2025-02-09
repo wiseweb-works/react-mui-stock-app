@@ -18,9 +18,8 @@ const LoginForm = ({
         value={values.username}
         onChange={handleChange}
         error={touched.username && errors.username}
-        helperText={touched.username && errors.username} //validationda verdiğimiz kalıba uymazsa rengi errora çevirmesi için error attribute ı benden false/true degeri bekliyor ondan dolayı daha sağlıklı olması için boolean deger döndürüyoruz.
-        // touched da kullanıcının inputa tıklayıp tıklamadığını yakalıyor
-        onBlur={handleBlur} // kullanıcının input alanından ayrıldığını yaklayan event
+        helperText={touched.username && errors.username}
+        onBlur={handleBlur}
         margin="normal"
       />
       <TextField
@@ -31,9 +30,8 @@ const LoginForm = ({
         value={values.password}
         onChange={handleChange}
         error={touched.password && errors.password}
-        helperText={touched.password && errors.password} //validationda verdiğimiz kalıba uymazsa rengi errora çevirmesi için error attribute ı benden false/true degeri bekliyor ondan dolayı daha sağlıklı olması için boolean deger döndürüyoruz.
-        // touched da kullanıcının inputa tıklayıp tıklamadığını yakalıyor
-        onBlur={handleBlur} // kullanıcının input alanından ayrıldığını yaklayan event
+        helperText={touched.password && errors.password}
+        onBlur={handleBlur}
         margin="normal"
         type="password"
       />

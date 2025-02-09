@@ -17,7 +17,7 @@ const Register = () => {
   const { user } = useSelector((state) => state.auth);
   const SignupSchema = Yup.object().shape({
     username: Yup.string()
-      .min(5, 'Kullanıcı adı 5 karakterden küçük olamaz')
+      .min(5, 'Username cannot be less than 5 characters')
       .max(50, 'Too Long!')
       .required('Required'),
     firstName: Yup.string()
@@ -28,13 +28,15 @@ const Register = () => {
       .min(2, 'Too Short!')
       .max(50, 'Too Long!')
       .required('Required'),
-    email: Yup.string().email('Invalid email').required('Bu alan zorunludur'),
+    email: Yup.string()
+      .email('Invalid email')
+      .required('This field is required'),
     password: Yup.string()
-      .min(8, 'Password 8 kararkterden az olamaz')
-      .matches(/[a-z]/, 'Şifre küçük harf içermelidir')
-      .matches(/[A-Z]/, 'Şifre büyük harf içermelidir')
-      .matches(/\d+/, 'Şifre sayısal karakter içermelidir.')
-      .matches(/[@$?!%&*_-]+/, 'Özel karakter içermelidir(@$?!%&*_-)'),
+      .min(8, 'Password cannot be less than 8 characters')
+      .matches(/[a-z]/, 'Password must contain lowercase letters')
+      .matches(/[A-Z]/, 'Password must contain uppercase letters')
+      .matches(/\d+/, 'The password must contain numeric characters.')
+      .matches(/[@$?!%&*_-]+/, 'Must contain special characters (@$?!%&*_-)'),
   });
 
   useEffect(() => {
@@ -75,9 +77,6 @@ const Register = () => {
           >
             Register
           </Typography>
-
-          {/* /* -------------------------------------------------------------------------- */}
-          {/* FORMİK YAPISI */}
           <Formik
             initialValues={{
               username: '',
@@ -92,8 +91,6 @@ const Register = () => {
             }}
             component={(props) => <RegisterForm {...props} />}
           />
-          {/* /* -------------------------------------------------------------------------- */}
-
           <Box sx={{ textAlign: 'center', mt: 2, color: 'secondary.main' }}>
             <Link to="/">Already have an account? Sign in</Link>
           </Box>

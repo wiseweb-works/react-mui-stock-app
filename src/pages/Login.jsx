@@ -17,15 +17,15 @@ const Login = () => {
   const { user } = useSelector((state) => state.auth);
   const LoginSchema = Yup.object().shape({
     username: Yup.string()
-      .min(5, 'Kullanıcı adı 5 karakterden küçük olamaz')
+      .min(5, 'Username cannot be less than 5 characters')
       .max(50, 'Too Long!')
       .required('Required'),
     password: Yup.string()
-      .min(8, 'Password 8 kararkterden az değildir')
-      .matches(/[a-z]/, 'Şifre küçük harf içerir')
-      .matches(/[A-Z]/, 'Şifre büyük harf içerir')
-      .matches(/\d+/, 'Şifre sayısal karakter içerir.')
-      .matches(/[@$?!%&*_-]+/, 'Özel karakter içerir(@$?!%&*_-)'),
+      .min(8, 'Password is not less than 8 characters')
+      .matches(/[a-z]/, 'Password contains lowercase letters')
+      .matches(/[A-Z]/, 'Password contains uppercase letters')
+      .matches(/\d+/, 'The password contains numeric characters.')
+      .matches(/[@$?!%&*_-]+/, 'Contains special character(@$?!%&*_-)'),
   });
 
   useEffect(() => {
@@ -62,8 +62,6 @@ const Login = () => {
             SIGN IN
           </Typography>
 
-          {/* /* -------------------------------------------------------------------------- */}
-          {/* FORMİK YAPISI */}
           <Formik
             initialValues={{
               username: '',
@@ -71,12 +69,10 @@ const Login = () => {
             }}
             validationSchema={LoginSchema}
             onSubmit={(values) => {
-              console.log(values);
               dispatch(loginUser(values));
             }}
             component={(props) => <LoginForm {...props} />}
           />
-          {/* /* -------------------------------------------------------------------------- */}
 
           <Box sx={{ textAlign: 'center', mt: 2, color: 'secondary.main' }}>
             <Link to="/register">{`Don't have an account? Sign Up`}</Link>

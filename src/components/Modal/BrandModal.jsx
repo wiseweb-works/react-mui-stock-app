@@ -1,8 +1,7 @@
 import { Box, Button, Modal, TextField } from '@mui/material';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createItem, getItem } from '../../redux/reducer/dashboardReducer';
-import { useSelector } from 'react-redux';
 import { handleClose } from '../../redux/reducer/modalReducer';
 
 const style = {

@@ -73,7 +73,6 @@ const SaleEditModal = () => {
     >
       <Box sx={style}>
         <Box component="form" onSubmit={handleSubmit}>
-          {/* Brand Dropdown */}
           <FormControl fullWidth margin="dense">
             <InputLabel>Brand</InputLabel>
             <Select
@@ -90,7 +89,6 @@ const SaleEditModal = () => {
             </Select>
           </FormControl>
 
-          {/* Product Dropdown */}
           <FormControl fullWidth margin="dense">
             <InputLabel>Product</InputLabel>
             <Select
@@ -107,7 +105,6 @@ const SaleEditModal = () => {
             </Select>
           </FormControl>
 
-          {/* Quantity */}
           <TextField
             label="Quantity"
             name="quantity"
@@ -119,7 +116,6 @@ const SaleEditModal = () => {
             required
           />
 
-          {/* Price */}
           <TextField
             label="Price"
             name="price"

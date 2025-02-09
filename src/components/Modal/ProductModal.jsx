@@ -77,9 +77,8 @@ const ProductModal = () => {
     >
       <Box sx={style}>
         <Box component="form" onSubmit={handleSubmit}>
-          {/* Categories Dropdown */}
           <FormControl fullWidth margin="dense">
-            <InputLabel>Firm</InputLabel>
+            <InputLabel>Categories</InputLabel>
             <Select
               name="categoryId"
               value={info.categoryId || ''}
@@ -94,7 +93,6 @@ const ProductModal = () => {
             </Select>
           </FormControl>
 
-          {/* Brand Dropdown */}
           <FormControl fullWidth margin="dense">
             <InputLabel>Brand</InputLabel>
             <Select
@@ -111,7 +109,6 @@ const ProductModal = () => {
             </Select>
           </FormControl>
 
-          {/* Product Name */}
           <TextField
             label="Product Name"
             name="name"

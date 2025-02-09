@@ -87,7 +87,6 @@ const PurchaseModal = () => {
     >
       <Box sx={style}>
         <Box component="form" onSubmit={handleSubmit}>
-          {/* Firm Dropdown */}
           <FormControl fullWidth margin="dense">
             <InputLabel>Firm</InputLabel>
             <Select
@@ -104,7 +103,6 @@ const PurchaseModal = () => {
             </Select>
           </FormControl>
 
-          {/* Brand Dropdown */}
           <FormControl fullWidth margin="dense">
             <InputLabel>Brand</InputLabel>
             <Select
@@ -121,7 +119,6 @@ const PurchaseModal = () => {
             </Select>
           </FormControl>
 
-          {/* Product Dropdown */}
           <FormControl fullWidth margin="dense">
             <InputLabel>Product</InputLabel>
             <Select
@@ -138,7 +135,6 @@ const PurchaseModal = () => {
             </Select>
           </FormControl>
 
-          {/* Quantity */}
           <TextField
             label="Quantity"
             name="quantity"
@@ -150,7 +146,6 @@ const PurchaseModal = () => {
             required
           />
 
-          {/* Price */}
           <TextField
             label="Price"
             name="price"

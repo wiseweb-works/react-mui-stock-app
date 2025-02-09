@@ -16,12 +16,12 @@ export const createUser = createAsyncThunk(
   async (userInfo, { rejectWithValue }) => {
     try {
       const response = await axios.post(`${API_URL}/users/`, userInfo);
-      showToast('success', 'Kullanıcı başarıyla oluşturuldu!');
+      showToast('success', 'User created successfully!');
       return response.data;
     } catch (error) {
       showToast(
         'error',
-        error.response?.data?.message || 'Kullanıcı oluşturulamadı!'
+        error.response?.data?.message || 'Failed to create user!'
       );
       return rejectWithValue(error.response?.data || 'Server error');
     }
@@ -33,11 +33,10 @@ export const loginUser = createAsyncThunk(
   async (values, { rejectWithValue }) => {
     try {
       const response = await axios.post(`${API_URL}/auth/login`, values);
-      showToast('success', 'Başarıyla oturum açıldı!');
-      console.log(response.data);
+      showToast('success', 'Successfully logged in!');
       return response.data;
     } catch (error) {
-      showToast('error', error.response?.data?.message || 'Oturum açılmaadı!');
+      showToast('error', error.response?.data?.message || 'Failed to log in!');
       return rejectWithValue(error.response?.data || 'Server error');
     }
   }
@@ -53,14 +52,11 @@ export const logoutUser = createAsyncThunk(
           Authorization: `Token ${token}`,
         },
       });
-      showToast('success', 'Başarıyla oturum kapatıldı!');
-      console.log(response.data);
+      showToast('success', 'Successfully logged out!');
+
       return response.data;
     } catch (error) {
-      showToast(
-        'error',
-        error.response?.data?.message || 'Oturum kapatılamadı!'
-      );
+      showToast('error', error.response?.data?.message || 'Failed to log out!');
       return rejectWithValue(error.response?.data || 'Server error');
     }
   }

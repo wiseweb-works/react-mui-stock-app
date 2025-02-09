@@ -1,6 +1,6 @@
 import { Grid2, Paper, Typography, Container } from '@mui/material';
 import { useState, useEffect } from 'react';
-import axios from 'axios'; // Axios import
+import axios from 'axios';
 import SalesChart from '../components/Charts/SalesChart';
 import PurchaseChart from '../components/Charts/PurchaseChart';
 import { useSelector } from 'react-redux';
@@ -71,7 +71,6 @@ const Home = () => {
         Sales & Purchases Dashboard
       </Typography>
 
-      {/* Toplam Bilgileri */}
       <Grid2 container spacing={2} justifyContent="center" p={2}>
         <Grid2 item size={4}>
           <Paper sx={{ p: 2, textAlign: 'center', bgcolor: '#f5f5f5' }}>
@@ -108,7 +107,6 @@ const Home = () => {
         </Grid2>
       </Grid2>
 
-      {/* Grafikler */}
       <Grid2 container spacing={2} justifyContent="center" p={2}>
         <Grid2 item xs={12} md={6}>
           <SalesChart data={salesData} />
