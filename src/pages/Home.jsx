@@ -72,7 +72,7 @@ const Home = () => {
       </Typography>
 
       <Grid2 container spacing={2} justifyContent="center" p={2}>
-        <Grid2 item size={4}>
+        <Grid2 item size={{ xs: 12, sm: 10, md: 6, lg: 4 }}>
           <Paper sx={{ p: 2, textAlign: 'center', bgcolor: '#f5f5f5' }}>
             <Typography variant="h6">Total Sales</Typography>
             <Typography variant="h5" color="primary">
@@ -80,7 +80,7 @@ const Home = () => {
             </Typography>
           </Paper>
         </Grid2>
-        <Grid2 item size={4}>
+        <Grid2 item size={{ xs: 12, sm: 10, md: 6, lg: 4 }}>
           <Paper
             sx={{
               p: 2,
@@ -97,7 +97,7 @@ const Home = () => {
             </Typography>
           </Paper>
         </Grid2>
-        <Grid2 item size={4}>
+        <Grid2 item size={{ xs: 12, sm: 10, md: 6, lg: 4 }}>
           <Paper sx={{ p: 2, textAlign: 'center', bgcolor: '#f5f5f5' }}>
             <Typography variant="h6">Total Purchases</Typography>
             <Typography variant="h5" color="secondary">
@@ -108,10 +108,18 @@ const Home = () => {
       </Grid2>
 
       <Grid2 container spacing={2} justifyContent="center" p={2}>
-        <Grid2 item xs={12} md={6}>
+        <Grid2
+          item
+          sx={{ display: { xs: 'none', md: 'block' } }}
+          size={{ md: 12, lg: 9, xl: 6 }}
+        >
           <SalesChart data={salesData} />
         </Grid2>
-        <Grid2 item xs={12} md={6}>
+        <Grid2
+          item
+          sx={{ display: { xs: 'none', md: 'block' } }}
+          size={{ md: 12, lg: 9, xl: 6 }}
+        >
           <PurchaseChart data={purchaseData} />
         </Grid2>
       </Grid2>

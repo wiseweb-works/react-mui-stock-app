@@ -32,9 +32,9 @@ const Brands = () => {
       >
         New Brand
       </Button>
-      <Grid2 container spacing={2} mt={4}>
+      <Grid2 container spacing={2} mt={4} sx={{ justifyContent: 'center' }}>
         {brands.map((brand) => (
-          <Grid2 key={brand._id} item size={3}>
+          <Grid2 key={brand._id} item size={{ sm: 10, md: 6, lg: 4, xl: 3 }}>
             <BrandCard brand={brand} />
           </Grid2>
         ))}

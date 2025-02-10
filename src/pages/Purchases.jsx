@@ -20,7 +20,7 @@ const Purchases = () => {
   return loading ? (
     <LoadingPlaceholder />
   ) : (
-    <Container maxWidth="xl">
+    <Container maxWidth="xl" sx={{ justifyContent: 'center' }}>
       <Typography sx={{ textAlign: 'center' }} variant="h4">
         Purchases
       </Typography>

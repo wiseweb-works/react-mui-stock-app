@@ -32,9 +32,9 @@ const Firms = () => {
       >
         New Firm
       </Button>
-      <Grid2 container spacing={2} mt={4}>
+      <Grid2 container spacing={2} mt={4} sx={{ justifyContent: 'center' }}>
         {firms.map((firm) => (
-          <Grid2 key={firm._id} item size={3}>
+          <Grid2 key={firm._id} item size={{ sm: 10, md: 6, lg: 4, xl: 3 }}>
             <FirmsCard firm={firm} />
           </Grid2>
         ))}
