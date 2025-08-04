@@ -1,4 +1,4 @@
-import { Avatar, Grid2, Box, Typography } from '@mui/material';
+import { Avatar, Grid, Box, Typography } from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
 import image from '../assets/hero.png';
 import { Link, useNavigate } from 'react-router';
@@ -37,7 +37,7 @@ const Login = () => {
   return (
     <div style={{ height: '100vh' }}>
       <AuthHeader />
-      <Grid2
+      <Grid
         container
         spacing={2}
         justifyContent="center"
@@ -47,7 +47,7 @@ const Login = () => {
           p: 2,
         }}
       >
-        <Grid2 size={{ xs: 12, sm: 6, md: 4 }}>
+        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
           <Avatar
             sx={{
               backgroundColor: 'secondary.main',
@@ -77,9 +77,9 @@ const Login = () => {
           <Box sx={{ textAlign: 'center', mt: 2, color: 'secondary.main' }}>
             <Link to="/register">{`Don't have an account? Sign Up`}</Link>
           </Box>
-        </Grid2>
+        </Grid>
         <AuthImage image={image} />
-      </Grid2>
+      </Grid>
     </div>
   );
 };

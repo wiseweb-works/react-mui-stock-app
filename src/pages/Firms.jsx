@@ -1,4 +1,4 @@
-import { Grid2, Typography, Button, Container } from '@mui/material';
+import { Grid, Typography, Button, Container } from '@mui/material';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getItem } from '../redux/reducer/dashboardReducer';
@@ -32,13 +32,13 @@ const Firms = () => {
       >
         New Firm
       </Button>
-      <Grid2 container spacing={2} mt={4} sx={{ justifyContent: 'center' }}>
+      <Grid container spacing={2} mt={4} sx={{ justifyContent: 'center' }}>
         {firms.map((firm) => (
-          <Grid2 key={firm._id} item size={{ sm: 10, md: 6, lg: 4, xl: 3 }}>
+          <Grid key={firm._id} item size={{ sm: 10, md: 6, lg: 4, xl: 3 }}>
             <FirmsCard firm={firm} />
-          </Grid2>
+          </Grid>
         ))}
-      </Grid2>
+      </Grid>
       <FirmModal />
       <FirmEditModal />
     </Container>

@@ -5,7 +5,7 @@ import {
   ListItemText,
   Toolbar,
   Box,
-} from '@mui/material/';
+} from '@mui/material';
 import { useLocation, useNavigate } from 'react-router';
 import { btnStyle, selectedStyle } from '../styles/globalStyles';
 

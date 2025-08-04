@@ -1,9 +1,9 @@
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AppRouter from './router/AppRouter';
 import { Provider } from 'react-redux';
 import { store } from './redux/index';
 import { ToastContainer } from 'react-toastify';
 import ErrorBoundary from './components/ErrorBoundary';
+import { createTheme, ThemeProvider } from '@mui/material';
 
 function App() {
   const theme = createTheme({

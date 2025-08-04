@@ -1,7 +1,7 @@
 import LockIcon from '@mui/icons-material/Lock';
 import image from '../assets/regi.avif';
 import { Link, useNavigate } from 'react-router';
-import { Box, Typography, Avatar, Grid2 } from '@mui/material';
+import { Box, Typography, Avatar, Grid } from '@mui/material';
 import AuthHeader from '../components/AuthHeader';
 import AuthImage from '../components/AuthImage';
 import { Formik } from 'formik';
@@ -48,7 +48,7 @@ const Register = () => {
   return (
     <div style={{ height: '100vh' }}>
       <AuthHeader />
-      <Grid2
+      <Grid
         container
         spacing={2}
         justifyContent="center"
@@ -58,7 +58,7 @@ const Register = () => {
           p: 2,
         }}
       >
-        <Grid2 size={{ xs: 12, sm: 6, md: 4 }}>
+        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
           <Avatar
             sx={{
               backgroundColor: 'secondary.light',
@@ -94,9 +94,9 @@ const Register = () => {
           <Box sx={{ textAlign: 'center', mt: 2, color: 'secondary.main' }}>
             <Link to="/">Already have an account? Sign in</Link>
           </Box>
-        </Grid2>
+        </Grid>
         <AuthImage image={image} />
-      </Grid2>
+      </Grid>
     </div>
   );
 };

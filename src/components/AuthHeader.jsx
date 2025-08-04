@@ -1,11 +1,13 @@
-import { Grid2, Typography } from '@mui/material/';
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+
 const AuthHeader = () => {
   return (
-    <Grid2 size={12} m={5}>
+    <Grid size={12} m={5}>
       <Typography variant="h3" color="primary" align="center">
         Stock Management App
       </Typography>
-    </Grid2>
+    </Grid>
   );
 };
 
